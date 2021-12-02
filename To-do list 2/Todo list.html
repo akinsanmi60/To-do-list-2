@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Document</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        background-image: linear-gradient(180deg, #001845, #723c70);
+        color: white;
+        font-family: 'Bangers', cursive;
+        min-height: 100vh;
+    }
+    
+    h1{
+        font-family: 'Bangers', cursive;
+        font-size: 2.5rem;
+        margin-bottom: 5px;
+        margin-top: 50px;
+        font-weight: 500;
+    }
+
+    header, form {
+        min-height: 20vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    header{
+        flex-direction: column;
+    }
+
+   .icon{
+     font-size: 50px;
+
+   }
+
+    form input, form button{
+        padding: 8px;
+        font-size: 16px;
+        border: none;
+        background: whitesmoke;
+        outline: none;
+        border-radius: 5px;
+        margin-top: -30px;
+    }
+
+    form input {
+        width: 40%;
+        margin-right: 5px;
+    }
+
+    form button {
+        color: green;
+        background: white;
+        cursor: pointer;
+        transition: all 0.4s ease-in;
+    }
+
+    form button:hover {
+     
+        color: white;
+        background: green;
+    }
+   
+    h2{
+        font-family: 'Bangers', cursive;
+        font-size: 1.5rem;
+        font-weight: 300;
+    }
+
+
+    .todo-container{
+        padding: 10px;
+        width: 50%;
+        margin: auto;
+        overflow: hidden;
+    }
+
+    #todo-lists {
+       min-width: 30%;
+    }
+
+    
+    .content{
+        display: flex;
+        justify-content: space-between;
+        padding: 9px;
+
+    }
+
+    .content input, .content button{
+        padding: 8px;
+        border: none;
+        background: whitesmoke;
+        outline: none;
+        border-radius: 5px;
+   
+    }
+
+    .content input {
+        width: 90%;
+        color: #370617 ;
+        font-size: 16px;
+        font-family: 'Bangers', cursive;
+        margin-right: 3px;
+    }
+    
+    button {
+        cursor: pointer;
+        margin: 0 2px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        transition: 00.4s;
+    }
+
+    .delete{
+        color: red; 
+        font-size: 20px;
+    }
+
+    .delete:hover {
+     color: white;
+     background:red;
+    }
+
+    .edit{
+        color: rgba(7, 247, 15, 0.852);
+        font-size: 20px;    
+    }
+
+    .edit:hover {
+     color: white;
+     background:rgba(7, 247, 15, 0.852);
+    }
+
+    .check{
+        color: rgba(13, 203, 77, 0.564);
+        font-size: 20px;    
+    }
+
+    
+    .check:hover {
+     color: white;
+     background:rgba(13, 203, 77, 0.564);
+    }
+
+    .completed {
+        text-decoration: line-through;
+        opacity: 0.5;
+        color: rgba(13, 203, 77, 0.564);
+        
+    }
+
+
+</style>
+<body>
+    <header>
+        <h1>TO-DO List</h1>
+        <i class="icon fas fa-book-open"></i>
+        </header>
+        
+        <form id="todo-form">
+            <input type="text"  id="todo-input" placeholder="What's your plan?">
+            <button type="submit" id="todo-submit" value="Add task"> 
+                <i class="fa fa-plus-square" aria-hidden="true"></i>
+             </button>
+        </form>
+    
+
+
+    <main>
+        <section class="todo-container">
+            <h2>To-Do</h2>
+
+            <div id="todo-lists">
+                
+            </div>
+
+        </section>
+    </main>
+
+
+    <script>
+        window.addEventListener('load', () => {
+            const form = document.querySelector('#todo-form');
+            const input = document.querySelector('#todo-input');
+            const todo_list_el = document.querySelector('#todo-lists');
+
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault(); // this prevent the form from reloading
+
+                const todo = input.value; // storing the value of input form
+                
+                if (!todo) {
+                    alert ('Please Add To-do Activity');
+                    return;
+                }
+
+
+                //creating this Div in the DOM
+                /*
+                <div id="todo-lists">
+                    <div class="content">
+                        <input type="text"  class="word" value="shinny task" readonly>
+                    
+                    
+                        <button class="edit"><i class="fas fa-edit"></i></button>
+                        <button class="delete"><i class="fas fa-trash-alt"></i></button>
+                        <button class="check"><i class="fas fa-check-square"></i></i></button>
+                    </div>
+                 </div>
+                */
+
+
+                const todo_El = document.createElement('div'); //this is creating the DIV container for todo
+                todo_El.classList.add('todo');  //adding CSS class to the todo_El 
+
+               const todo_content_el = document.createElement('div');
+               todo_content_el.classList.add('content'); // adding CSS class to the todo_content_el 
+               todo_El.appendChild(todo_content_el); // this is adding the div for 
+
+
+               const todo_input_el = document.createElement('input');  // firstly create an input tag  
+               todo_input_el.classList.add('content'); // adding CSS class to the todo_input_el 
+               todo_input_el.setAttribute('readonly', 'readonly'); 
+               todo_input_el.type = 'text'; // this is the type of input element created
+               todo_input_el.value = todo; // this means the value of input form equals to the value of todo_input_el.
+
+                //CREATING EDIT BUTTTON
+               const button_edit_el = document.createElement('button')
+               button_edit_el.classList.add('edit') //  adding CSS class to the button_delete_el
+               button_edit_el.innerHTML = '<i class="fas fa-edit"></i>'; // this is writing a text with JS for HTML
+
+                //CREATING DELETE BUTTON
+               const button_delete_el = document.createElement('button')
+               button_delete_el.classList.add('delete') //  adding CSS class to the button_delete_el
+               button_delete_el.innerHTML = '<i class="fas fa-trash-alt"></i>'; // this is writing a text with JS for HTML 
+               
+               //CREATING CHECK BUTTON
+               const button_check_el = document.createElement('button')
+               button_check_el.classList.add('check') //  adding CSS class to the button_delete_el
+               button_check_el.innerHTML = '<i class="fas fa-check-square"></i>'; // this is writing a text with JS for HTML
+
+
+               //ADDING OF THE BUTTONS AND INPUT IN THE DIV OF TO-DO CONTENT
+                todo_content_el.appendChild(todo_input_el)
+                todo_content_el.appendChild(button_check_el)
+                todo_content_el.appendChild(button_delete_el)
+                todo_content_el.appendChild(button_edit_el)
+                
+
+                //ADDING OF THE TODO_EL IN THE DIV OF TO-DO_LIST_EL
+                todo_list_el.appendChild(todo_El);
+
+
+                input.value =''; // this is to clear input value automatically on enter key
+
+                   // This is making the Edit button functional
+                button_edit_el.addEventListener('click', () => {
+                     if (button_edit_el.innerHTML == '<i class="fas fa-edit"></i>') {
+                         
+                        //it will firstly remove the readonly attribute st on task_input_el(content)
+                        todo_input_el.removeAttribute('readonly');
+
+                        //After removal of the readonly attribute, then focus on the input
+                        todo_input_el.focus();
+
+                        button_edit_el.innerHTML = '<i class="fas fa-save"></i>'; // This is code that changes the edit text to save when the edit button is click 
+
+                     } else {
+                         // this make will allow the Save button to return to Edit again
+                       button_edit_el.innerHTML ='<i class="fas fa-edit"></i>'; 
+                       todo_input_el.setAttribute('readonly', 'readonly');
+                     }
+               });
+
+
+                button_delete_el.addEventListener('click', () => {
+                        todo_list_el.removeChild(todo_El)
+                });
+
+                button_check_el.addEventListener('click', () =>{
+                    todo_content_el.classList.toggle('completed')
+                    todo_input_el.setAttribute('readonly', 'readonly');
+                   
+                })
+
+            })
+
+        })
+
+    </script>
+</body>
+</html>
